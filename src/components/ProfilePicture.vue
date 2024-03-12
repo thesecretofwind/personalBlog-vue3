@@ -10,10 +10,10 @@
         <div class="header">login</div>
         <div class="input-wrapper">
           <div class="border-wrapper">
-            <input type="text" name="username" placeholder="username" class="border-item" v-model="username" />
+            <input type="text" name="username" placeholder="username" class="border-item" v-model="loginForm.username" />
           </div>
           <div class="border-wrapper">
-            <input type="password" name="password" placeholder="password" class="border-item" v-model="password" />
+            <input type="password" name="password" placeholder="password" class="border-item" v-model="loginForm.password" />
           </div>
         </div>
         <div class="action">
@@ -47,6 +47,10 @@
     const showLogin = () => {
       isShowLogin.value = true;
     }
+    submmit(){
+      
+  
+    },
 </script>
 
 <style scoped>
