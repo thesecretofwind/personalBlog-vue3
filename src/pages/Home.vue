@@ -1,10 +1,11 @@
 <template>
     <div class="hearder">
       <blog-header></blog-header>
-
       <profile-picture></profile-picture>
     </div>
-    <router-view></router-view>
+    <div class="content">
+        <router-view></router-view>
+    </div>
   
 </template>
 
