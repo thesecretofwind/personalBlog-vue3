@@ -1,22 +1,37 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+// import ProfilePicture from '@/pages/LoginForm.vue';
 </script>
 
 <template>
-  <router-view></router-view>
+  <div id="app">
+    <router-view></router-view>
+  </div>
+  <!-- <profile-picture></profile-picture> -->
+  
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+#app{
+  background: url("./assets/bg.jpg") no-repeat;
+  position: relative;
+  height: 650px;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: -8px;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+h1 {
+  margin: 0 auto;
+  font-size: 49px;
+  color: transparent;
+  background: linear-gradient(#f6d365, #ff9800);
+  background-clip: text;
+  font-size: 55px;
+  display: inline;
+  vertical-align: top;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+
+
 </style>
