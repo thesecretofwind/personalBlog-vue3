@@ -5,11 +5,11 @@
         class="img"
         src="../assets/profile-picture.jpg" 
         alt="Mr.cutiosity的头像" title="登陆"
-        @mouseenter="imgClass = 'img-hover';"
-        @mouseleave="imgClass = 'img-restore';"
+        @mouseenter="imgClass = 'img-hover'; defaultClass =''"
+        @mouseleave="imgClass = 'img-restore'; defaultClass='img-default'"
         ref="img"
         @click="isShowLogin = true"
-        :class="imgClass"
+        :class="[imgClass, defaultClass]"
         />
       <p class="words">看见奥特曼就落荒而逃的怪兽</p>
     </div>
@@ -31,6 +31,7 @@
     const isShowLogin = ref<boolean>(false);
     const isHovered = ref(false);
     const imgClass = ref('');
+    const defaultClass = ref('img')
     const router = useRouter();
 
     
@@ -101,10 +102,14 @@
   border-radius: 100%;
   border: 2px dashed #fff;
   padding: 5px;
-  animation: imgTranslate 20s linear infinite;
   transition: scale 1s ease-in-out;
   cursor: pointer;
 }
+
+.img-default {
+  animation: imgTranslate 20s linear infinite !important;
+}
+
 .img-hover {
   animation: imgHover forwards 1s ease-in-out;
 }
