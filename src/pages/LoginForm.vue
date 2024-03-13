@@ -1,6 +1,6 @@
 <template>
   <div class="loggin">
-    <span class="close"  @mouseenter="isHover = true;" @mouseleave="isHover = false;" :style="isHover ? hoverStyle : normaleStyle " @click="close">x</span>
+    <!-- <span class="close"  @mouseenter="isHover = true;" @mouseleave="isHover = false;" :style="isHover ? hoverStyle : normaleStyle " @click="close">x</span> -->
     <div class="form-wrapper">
       <div class="header">login</div>
       <div class="input-wrapper">
@@ -36,6 +36,7 @@
 </template>
 
 <script setup lang="ts">
+import { httpPost } from '@/utils/request';
 import { message } from 'ant-design-vue';
 import {ref, reactive} from 'vue';
 const emit = defineEmits<{
@@ -47,16 +48,16 @@ const emit = defineEmits<{
      password: ''
  });
 
- const isHover = ref(false);
- const hoverStyle = {
-  color: '#fff',
-  backgroundColor: 'rgb(51, 51, 51)'
- };
+//  const isHover = ref(false);
+//  const hoverStyle = {
+//   color: '#fff',
+//   backgroundColor: 'rgb(51, 51, 51)'
+//  };
 
- const normaleStyle = {
-  color: 'rgb(204, 204, 204)',
-  backgroundColor: 'inherit'
- }
+//  const normaleStyle = {
+//   color: 'rgb(204, 204, 204)',
+//   backgroundColor: 'inherit'
+//  }
 
 
  const submmit = () => {
@@ -65,6 +66,8 @@ const emit = defineEmits<{
     message.error('用户名或密码不能为空!');
     return;
   }
+
+  httpPost('/login', loginForm)
 
  }
 
@@ -235,6 +238,12 @@ img:hover {
   border: 1px solid #fff;
   padding: 5px;
   border-radius: 20px;
+
+  margin-left: 15px;
+
+  &:first-child {
+    margin-left: 0px;
+  }
 }
 
 input:focus {

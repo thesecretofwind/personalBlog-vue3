@@ -1,19 +1,21 @@
 <template>
-  <div class=".profile-picture">
+  <div class="profile-picture">
     <div class="picture">
-      <img src="../assets/profile-picture.jpg" alt="Mr.cutiosity的头像" title="登陆" @click="isShowLogin = true"/>
+      <img
+        class="img"
+        src="../assets/profile-picture.jpg" 
+        alt="Mr.cutiosity的头像" title="登陆"
+        @mouseenter="imgClass = 'img-hover';"
+        @mouseleave="imgClass = 'img-restore';"
+        ref="img"
+        @click="isShowLogin = true"
+        :class="imgClass"
+        />
       <p class="words">看见奥特曼就落荒而逃的怪兽</p>
     </div>
-    <!-- <a-modal 
-      v-model:visible="isShowLogin"
-      title = "登录"
-      >
-      <login-form></login-form>
-    </a-modal> -->
     <transition :duration="550" name="nested">
       <login-form v-if="isShowLogin" @close="isShowLogin = false"></login-form>
     </transition>
-    
   </div>
 
   <div>
@@ -21,16 +23,27 @@
 </template>
 
 <script setup lang="ts">
-    import {ref, reactive} from 'vue';
-    import LoginForm from './LoginForm.vue';
+    import {ref} from 'vue';
+    import { useRouter } from 'vue-router';
+
+    import LoginForm from '@/pages/LoginForm.vue';
 
     const isShowLogin = ref<boolean>(false);
+    const isHovered = ref(false);
+    const imgClass = ref('');
+    const router = useRouter();
+
+    
+
+    const login = () => {
+        router.push('/login')
+    }
 
 
 </script>
 
 <style lang="less" scoped>
- 
+ @import url(http://at.alicdn.com/t/font_8d5l8fzk5b87iudi.css);
  .nested-enter-active, .nested-leave-active {
 	transition: all 0.3s ease-in-out;
 }
@@ -64,5 +77,85 @@
     has been fixed.
   */
   opacity: 0.001;
+}
+
+
+.picture {
+  position: relative;
+  width: 75%;
+  margin: auto;
+  margin-top: 600px;
+  top: -170px;
+  padding: 40px 0;
+  padding-bottom: 40px;
+  font-size: 16px;
+  opacity: 0.98;
+  background: rgba(230, 244, 249, 0.8);
+  z-index: 1;
+  border-radius: 5px;
+  text-align: center;
+}
+.img {
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  border: 2px dashed #fff;
+  padding: 5px;
+  animation: imgTranslate 20s linear infinite;
+  transition: scale 1s ease-in-out;
+  cursor: pointer;
+}
+.img-hover {
+  animation: imgHover forwards 1s ease-in-out;
+}
+
+.img-restore {
+  animation: imgRestre forwards 1s ease-in-out;
+}
+.words {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 20px auto;
+  color: #97dffd;
+  text-align: center;
+  text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff,
+    0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff,
+    0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff,
+    0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff,
+    0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff,
+    0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff,
+    0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff,
+    0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff,
+    0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff,
+    0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff;
+}
+@keyframes imgTranslate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes imgHover {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.5);
+  }
+}
+
+@keyframes imgRestre {
+  0% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+    animation: imgTranslate 20s linear infinite;
+  }
 }
 </style>
