@@ -1,31 +1,19 @@
 <template>
   <div class=".profile-picture">
     <div class="picture">
-      <img src="../assets/profile-picture.jpg" alt="Mr.cutiosity的头像" title="登陆" @click="showLogin"/>
+      <img src="../assets/profile-picture.jpg" alt="Mr.cutiosity的头像" title="登陆" @click="isShowLogin = true"/>
       <p class="words">看见奥特曼就落荒而逃的怪兽</p>
     </div>
-    <div class="loggin" v-show="isShowLogin">
-      <span class="close" @click="close">x</span>
-      <div class="form-wrapper">
-        <div class="header">login</div>
-        <div class="input-wrapper">
-          <div class="border-wrapper">
-            <input type="text" name="username" placeholder="username" class="border-item" v-model="loginForm.username" />
-          </div>
-          <div class="border-wrapper">
-            <input type="password" name="password" placeholder="password" class="border-item" v-model="loginForm.password" />
-          </div>
-        </div>
-        <div class="action">
-          <div class="btn" @click="submmit">login</div>
-        </div>
-        <div class="icon-wrapper">
-          <i class="iconfont icon-weixin"></i>
-          <i class="iconfont icon-qq"></i>
-          <i class="iconfont icon-github"></i>
-        </div>
-      </div>
-    </div>
+    <!-- <a-modal 
+      v-model:visible="isShowLogin"
+      title = "登录"
+      >
+      <login-form></login-form>
+    </a-modal> -->
+    <transition :duration="550" name="nested">
+      <login-form v-if="isShowLogin" @close="isShowLogin = false"></login-form>
+    </transition>
+    
   </div>
 
   <div>
@@ -34,25 +22,47 @@
 
 <script setup lang="ts">
     import {ref, reactive} from 'vue';
-  
-    const isShowLogin = ref<boolean>(false);
-    const loginForm = reactive({
-        username: '',
-        password: ''
-    })
+    import LoginForm from './LoginForm.vue';
 
-    const close = () => {
-      isShowLogin.value = false;
-    };
-    const showLogin = () => {
-      isShowLogin.value = true;
-    }
-    submmit(){
-      
-  
-    },
+    const isShowLogin = ref<boolean>(false);
+
+
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+ 
+ .nested-enter-active, .nested-leave-active {
+	transition: all 0.3s ease-in-out;
+}
+/* delay leave of parent element */
+.nested-leave-active {
+  transition-delay: 0.25s;
+}
 
+.nested-enter-from,
+.nested-leave-to {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+/* we can also transition nested elements using nested selectors */
+.nested-enter-active .inner,
+.nested-leave-active .inner { 
+  transition: all 0.3s ease-in-out;
+}
+/* delay enter of nested element */
+.nested-enter-active .inner {
+	transition-delay: 0.25s;
+}
+
+.nested-enter-from .inner,
+.nested-leave-to .inner {
+  transform: translateX(30px);
+  /*
+  	Hack around a Chrome 96 bug in handling nested opacity transitions.
+    This is not needed in other browsers or Chrome 99+ where the bug
+    has been fixed.
+  */
+  opacity: 0.001;
+}
 </style>
