@@ -85,8 +85,7 @@
   position: relative;
   width: 75%;
   margin: auto;
-  margin-top: 600px;
-  top: -170px;
+  margin-top: 430px;
   padding: 40px 0;
   padding-bottom: 40px;
   font-size: 16px;
