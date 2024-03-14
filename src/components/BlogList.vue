@@ -1,8 +1,9 @@
 <template>
     <!-- 注意：这里自定义组件的值一定要加上单引号成一个字符串，否则无法传递 -->
     <!-- 去掉了设置成窄的形式  v-theme:column="'narrow'" -->
+    <profile-picture></profile-picture>
     <div id="show-blogs" @mouseleave="leave" @mouseenter="enter">
-      <canvas id="evanyou" width="1920" height="902"></canvas>
+      <canvas ref="evanyou" id="evanyou" width="1920" height="902"></canvas>
       <a href="#app">
         <div class="fallCat" :class="{fall:isShowCat}" ref="fall"></div>
       </a>
@@ -16,17 +17,17 @@
       <div class="single-blog" v-for="(item,index) in  filteredBlogs" :key="index">
         <!-- 注意：在router-link中to的地址要拼接，要使用v-bind绑定to属性 -->
         <router-link :to="'/blog/' +item.id">
-          <h2 v-rainbow>{{item.title|to-upper-case|otherSinpper}}</h2>
+          <h2 v-rainbow>{{item.title}}</h2>
         </router-link>
         <div class="myheader">
           <span class="post-time" style="#00a7e0">
             <span class="createdAt">
               <img src="../assets/date.png" alt="日期图像" />
-              发表于：{{item.createdAt|transformDate}}
+              发表于：{{item.createdAt}}
             </span>
             <span class="updatedAt">
               <img src="../assets/time.png" alt="更新时间" />
-              更新于：{{item.updatedAt|transformDate}}
+              更新于：{{item.updatedAt}}
             </span>
           </span>
         </div>
@@ -37,10 +38,10 @@
         </div>
         <article>
           <div class="post-date">
-            <div class="post-month">{{date.getMonth()+1|mydate}}</div>
-            <div class="post-day">{{date.getDate()|mydate}}</div>
+            <div class="post-month">{{date.getMonth()+1}}</div>
+            <div class="post-day">{{date.getDate()}}</div>
           </div>
-          <pre style="white-space: pre-line;">{{item.content|snippet}}</pre>
+          <pre style="white-space: pre-line;">{{item.content}}</pre>
           <!-- <mavon-editor
         class="md"
        :value="item.content"
@@ -60,8 +61,53 @@
   </template>
 
 <script setup lang="ts">
+import ProfilePicture from '@/components/ProfilePicture.vue';
+import { IBlog } from '@/types/blog.type';
+import bus from '@/utils/bus';
+import { getFullDate } from '@/utils/date';
+import { drawCanvas } from '@/utils/drawCanvas';
+import { otherSinpper, snippet, toUpperCase } from '@/utils/filters';
+import { computed, onMounted, ref } from 'vue';
 
+  const search = ref('');
+  const blogList = ref<IBlog[]>([]);
+  const isShowCat = ref(false);
+  const fall = ref<HTMLElement|null>(null);
+  const evanyou = ref<HTMLCanvasElement|null>(null)
+  const date = new Date();
 
+  const filteredBlogs = computed(()=> {
+    return blogList.value
+    .filter((item) => {
+      return item.title && item.title.includes(search.value);
+    })
+    .map(item => {
+      item.title = otherSinpper(toUpperCase(item.title));
+      item.createdAt = getFullDate(item.createdAt);
+      item.updatedAt = getFullDate(item.updatedAt);
+      item.content = snippet(item.content);
+      return item
+    })
+  });
+
+  const enter = () => {
+    fall.value?.getAttribute('class')?.replace('catLeave', '')
+    fall.value?.setAttribute('class', 'fallCat catEnter');
+  }
+  const leave = () => {
+    // fall.value!.style.top = '-100px';
+    console.log();
+    
+    fall.value?.setAttribute('class', 'fallCat catLeave')
+  }
+
+  onMounted(() => {
+    bus.on('inputVal', val => {
+      search.value = val as string;
+    });
+    
+    drawCanvas(evanyou.value!)
+  })
 
 </script>
 
@@ -104,7 +150,13 @@ input[type="text"] {
   box-sizing: border-box;
   border-radius: 20px;
   outline: none;
+  border: none;
   height: 45px;
+
+  &:focus {
+    border: 1px solid rgb(106, 174, 238);
+    // transition: border .5s;
+  }
 }
 h1 {
   text-align: center;
@@ -252,14 +304,26 @@ article {
   transition: top 0.2s;
 }
 
+.catEnter {
+  animation: fall 2s ease-in-out forwards;
+}
+
+
 @keyframes fall {
   100% {
     top: -307px;
   }
 }
 @keyframes leave {
+  0%{
+    top: -307px;
+  }
+
+  20% {
+    top: -257px
+  }
   100% {
-    top: -900px;
+    top: -950px;
   }
 }
 </style>
