@@ -1,7 +1,6 @@
 <template>
     <div class="hearder">
       <blog-header></blog-header>
-      <profile-picture></profile-picture>
     </div>
     <div class="content">
         <router-view></router-view>
@@ -11,7 +10,7 @@
 
 <script setup lang="ts">
 import BlogHeader from '@/components/BlogHeader.vue';
-import ProfilePicture from '@/components/ProfilePicture.vue';
+
 import { ref } from 'vue';
 
 // defineProps<{ msg: string }>()
